@@ -35,6 +35,12 @@ module OmniAuth
         access_token.options[:mode] = :query
         @raw_info ||= access_token.get('/user').parsed
       end
+
+      def authorize_params
+        super.tap do |params|
+          params.merge!(:state => request.params['state']) if request.params['state']
+        end
+      end
     end
   end
 end
